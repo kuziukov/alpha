@@ -1,0 +1,33 @@
+version: '2'
+
+services:
+  webserver:
+    build:
+      context: .
+    command: python server.py
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - MONGO_URI=mongodb://mongo:27017
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - 8080:8080
+  redis:
+    image: redis
+    volumes:
+      - redis_data:/var/lib/redis
+    hostname: redis
+    ports:
+      - 6379:6379
+  mongo:
+    image: mongo
+    volumes:
+      - mongo_data:/var/lib/mongo
+    ports:
+      - 27017:27017
+volumes:
+  mongo_data:
+    driver: local
+  redis_data:
+    driver: local
