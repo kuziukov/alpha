@@ -2,11 +2,13 @@ version: '2'
 
 services:
   webserver:
+    container_name: alpha
     build:
       context: .
+    restart: always
     command: python server.py
     environment:
-      - REDIS_URL=redis://redis:6379
+      - REDIS_URI=redis://redis:6379
       - MONGO_URI=mongodb://mongo:27017
     depends_on:
       - mongo
@@ -24,6 +26,7 @@ services:
     image: mongo
     volumes:
       - mongo_data:/var/lib/mongo
+    hostname: mongo
     ports:
       - 27017:27017
 volumes:
