@@ -1,9 +1,11 @@
+import asyncio
+
 import aioredis, config
 
 
-async def setup_redis(app):
-    session = await aioredis.create_redis_pool(config.SESSION_STORE_URI)
-    tmp = await aioredis.create_redis_pool(config.TMP_STORE_URI)
+async def setup_redis(app, loop):
+    session = await aioredis.create_redis_pool(config.SESSION_STORE_URI, loop=loop)
+    tmp = await aioredis.create_redis_pool(config.TMP_STORE_URI, loop=loop)
 
     async def close_redis(app):
         session.close()
